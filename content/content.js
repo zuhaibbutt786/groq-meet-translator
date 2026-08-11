@@ -41,6 +41,37 @@ const LANG_NAMES = {
   auto: "Auto"
 };
 
+const LANG_BCP = {
+  en: "en-US",
+  de: "de-DE",
+  es: "es-ES",
+  fr: "fr-FR",
+  ur: "ur-PK",
+  hi: "hi-IN",
+  ar: "ar-SA",
+  pt: "pt-BR",
+  zh: "zh-CN",
+  ja: "ja-JP",
+  ko: "ko-KR",
+  tr: "tr-TR",
+  ru: "ru-RU",
+  it: "it-IT",
+  nl: "nl-NL",
+  pl: "pl-PL"
+};
+
+function sendToInjector(payload, transfer) {
+  try {
+    if (transfer) {
+      window.postMessage(payload, "*", transfer);
+    } else {
+      window.postMessage(payload, "*");
+    }
+  } catch (e) {
+    console.warn("[GMT] postMessage failed", e);
+  }
+}
+
 async function loadSettings() {
   const data = await chrome.storage.local.get([
     "groqApiKey",
@@ -50,11 +81,11 @@ async function loadSettings() {
     "enabled"
   ]);
   settings = Object.assign({}, settings, data);
-  window.dispatchEvent(
-    new CustomEvent("gmt-set-mode", {
-      detail: { mode: settings.micMode || "translate_only" }
-    })
-  );
+  sendToInjector({
+    source: "gmt",
+    type: "set-mode",
+    mode: settings.micMode || "translate_only"
+  });
   updatePanel();
 }
 
@@ -281,28 +312,36 @@ async function translate(text) {
   return out || text;
 }
 
+function speakLocal(text, lang) {
+  if (!window.speechSynthesis || !text) return;
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = LANG_BCP[lang] || lang || "en-US";
+  u.rate = 1.05;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
 async function speakTranslation(text) {
   var lang = settings.targetLang || "en";
 
-  window.dispatchEvent(
-    new CustomEvent("gmt-speak-local", { detail: { text: text, lang: lang } })
-  );
+  // Always play locally for you
+  speakLocal(text, lang);
 
+  // Inject into Meet mic stream via MAIN-world injector (EN/AR via Groq TTS)
   if (lang === "en" || lang === "ar") {
     try {
       var buf = await groqTTS(text, lang);
       if (buf) {
-        window.dispatchEvent(
-          new CustomEvent("gmt-play-tts-buffer", {
-            detail: { arrayBuffer: buf, mime: "audio/wav" }
-          })
+        sendToInjector(
+          { source: "gmt", type: "play-tts", buffer: buf },
+          [buf]
         );
       }
     } catch (e) {
       console.warn("Groq TTS inject failed", e);
     }
   } else {
-    setStatus("Captions + local voice (Meet audio inject best for EN target)");
+    setStatus("Captions + local voice (Meet inject best for EN target)");
   }
 }
 
