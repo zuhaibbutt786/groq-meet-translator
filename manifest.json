@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Groq Meet Translator",
+  "version": "1.0.0",
+  "description": "Live speech translator for Google Meet. Speak any language — others hear the translation. Powered by Groq Whisper + Llama.",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*",
+    "https://api.groq.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Groq Meet Translator"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content/injector.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content/content.js"],
+      "run_at": "document_idle",
+      "css": ["content/overlay.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/*"],
+      "matches": ["https://meet.google.com/*"]
+    }
+  ]
+}
