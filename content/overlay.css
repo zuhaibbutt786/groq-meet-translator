@@ -1,0 +1,75 @@
+#gmt-panel {
+  position: fixed;
+  bottom: 88px;
+  right: 16px;
+  z-index: 999999;
+  width: 320px;
+  max-height: 280px;
+  background: rgba(15, 15, 19, 0.94);
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  color: #e4e4e7;
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+#gmt-panel header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #18181b;
+  border-bottom: 1px solid #27272a;
+  font-weight: 600;
+  font-size: 12px;
+}
+#gmt-panel header .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #52525b;
+  display: inline-block;
+  margin-right: 6px;
+}
+#gmt-panel header .dot.on {
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+#gmt-body {
+  padding: 10px 12px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#gmt-body .line {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+#gmt-body .src {
+  color: #a1a1aa;
+  font-size: 11px;
+}
+#gmt-body .tgt {
+  color: #a5b4fc;
+  font-weight: 500;
+}
+#gmt-status {
+  padding: 6px 12px;
+  border-top: 1px solid #27272a;
+  color: #71717a;
+  font-size: 10px;
+}
+#gmt-toggle {
+  background: #27272a;
+  border: none;
+  color: #e4e4e7;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  cursor: pointer;
+}
+#gmt-toggle.on {
+  background: #166534;
+  color: #bbf7d0;
+}
