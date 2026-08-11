@@ -1,0 +1,86 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  width: 340px;
+  background: #0f0f13;
+  color: #e4e4e7;
+  font-size: 13px;
+}
+.wrap { padding: 16px; }
+h1 {
+  font-size: 1.15rem;
+  background: linear-gradient(135deg, #34d399, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sub { color: #71717a; font-size: 11px; margin: 4px 0 14px; }
+label {
+  display: block;
+  color: #a1a1aa;
+  font-size: 11px;
+  margin: 10px 0 4px;
+}
+input, select {
+  width: 100%;
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #e4e4e7;
+  font-size: 13px;
+}
+.row { display: flex; gap: 6px; }
+.row input { flex: 1; }
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #27272a;
+  color: #e4e4e7;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 12px;
+}
+.btn.primary { background: #6366f1; color: #fff; }
+.btn.full { width: 100%; margin-top: 14px; padding: 10px; }
+.hint { font-size: 11px; color: #71717a; margin-top: 4px; min-height: 14px; }
+.hint.ok { color: #4ade80; }
+.hint.err { color: #f87171; }
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 10px;
+  background: #18181b;
+  border-radius: 8px;
+  border: 1px solid #27272a;
+}
+.switch { position: relative; width: 42px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0;
+  background: #3f3f46;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+input:checked + .slider { background: #22c55e; }
+input:checked + .slider:before { transform: translateX(18px); }
+.steps {
+  margin-top: 16px;
+  padding-left: 18px;
+  color: #a1a1aa;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.steps strong { color: #e4e4e7; }
